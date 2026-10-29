@@ -73,7 +73,7 @@ export default function Login() {
         <form onSubmit={handleSubmit} className="card p-6 flex flex-col gap-4">
           {error && <p className="text-sm px-3 py-2 rounded-lg" style={{ background: 'rgba(251,113,133,0.12)', color: 'var(--danger)' }}>{error}</p>}
           <label className="flex flex-col gap-1 text-sm">Email
-            <input type="email" required value={email} onChange={(e) => setEmail(e.target.value)} className="px-3 py-2.5" placeholder="you@email.com" />
+            <input type="email" required value={email} onChange={(e) => setEmail(e.target.value)} className="px-3 py-2.5" placeholder="Email" />
           </label>
           <label className="flex flex-col gap-1 text-sm">Password
             <PasswordInput required value={password} onChange={(e) => setPassword(e.target.value)} className="px-3 py-2.5" placeholder="••••••••" />
