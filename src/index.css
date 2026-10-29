@@ -1,0 +1,375 @@
+@import "tailwindcss";
+
+/* ============================================================
+   WheelSync — Galaxy design tokens
+   Dark mode = deep-space palette. Light mode = the SAME hues,
+   lifted to light tints (never a plain black/white flip).
+   ============================================================ */
+
+@font-face {
+  font-family: 'Sora';
+  src: local('Sora');
+}
+
+:root {
+  --font-display: 'Sora', 'Segoe UI', system-ui, sans-serif;
+  --font-body: 'Inter', 'Segoe UI', system-ui, sans-serif;
+
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+
+  --shadow-glow: 0 8px 40px -8px rgba(61, 123, 250, 0.45);
+}
+
+/* ---------- DARK (default): deep navy blue ---------- */
+:root,
+[data-theme='dark'] {
+  --bg-void: #060d1f;
+  --bg-deep: #0a1530;
+  --bg-surface: #0f1b3a;
+  --bg-surface-2: #16264d;
+  --border-soft: rgba(150, 175, 225, 0.16);
+
+  --text-primary: #eef3ff;
+  --text-muted: #a3b3d6;
+  --text-faint: #6c7ea6;
+
+  --nebula-1: #3d7bfa;   /* main blue: buttons, chart bars */
+  --nebula-2: #6d72f0;   /* the little bit of indigo */
+  --nebula-3: #38bdf8;   /* sky blue: links, highlights */
+  --star-gold: #f5c542;
+  --star-cyan: #4dd8e8;
+
+  --success: #4ade80;
+  --danger: #fb7185;
+  --warning: #fbbf24;
+
+  --gradient-primary: linear-gradient(135deg, #5865f2 0%, var(--nebula-1) 45%, #2fa8f5 100%);
+  --gradient-surface: linear-gradient(160deg, #0f1b3a 0%, #0a1530 100%);
+}
+
+/* ---------- LIGHT: soft blue gradient, same hues lifted ---------- */
+[data-theme='light'] {
+  --bg-void: #eef4ff;
+  --bg-deep: #f5f8ff;
+  --bg-surface: #ffffff;
+  --bg-surface-2: #e7effc;
+  --border-soft: rgba(70, 95, 150, 0.14);
+
+  --text-primary: #13203d;
+  --text-muted: #52607f;
+  --text-faint: #8693b0;
+
+  --nebula-1: #2f6fe8;
+  --nebula-2: #5b6ee8;
+  --nebula-3: #1e9bd7;
+  --star-gold: #e0ab1f;
+  --star-cyan: #2fb8cb;
+
+  --success: #16a34a;
+  --danger: #e11d48;
+  --warning: #d97706;
+
+  --gradient-primary: linear-gradient(135deg, #4a63e6 0%, var(--nebula-1) 45%, #1e9bd7 100%);
+  --gradient-surface: linear-gradient(160deg, #ffffff 0%, #eef4ff 100%);
+}
+
+* { box-sizing: border-box; }
+
+html, body, #root { height: 100%; }
+body { overflow-x: hidden; }
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  background: var(--bg-void);
+  color: var(--text-primary);
+  transition: background-color .25s ease, color .25s ease;
+}
+
+h1, h2, h3, .font-display { font-family: var(--font-display); }
+
+/* Starfield backdrop used behind auth screens / dashboard hero */
+.galaxy-bg {
+  position: relative;
+  background: var(--bg-void);
+  background-image:
+    radial-gradient(circle at 15% 20%, rgba(61,123,250,0.30), transparent 40%),
+    radial-gradient(circle at 85% 15%, rgba(56,189,248,0.18), transparent 45%),
+    radial-gradient(circle at 50% 90%, rgba(88,101,242,0.20), transparent 50%);
+  overflow: hidden;
+}
+[data-theme='light'] .galaxy-bg {
+  background-image:
+    radial-gradient(circle at 15% 20%, rgba(47,111,232,0.16), transparent 40%),
+    radial-gradient(circle at 85% 15%, rgba(30,155,215,0.14), transparent 45%),
+    radial-gradient(circle at 50% 90%, rgba(91,110,232,0.12), transparent 50%);
+}
+.login-shell {
+  background-color: #102f61;
+  background-image: linear-gradient(135deg, #081a40 0%, #10307a 52%, #1b2f86 100%);
+}
+.app-shell {
+  background-color: #102f61;
+  background-image: linear-gradient(135deg, #081a40 0%, #10307a 52%, #1b2f86 100%);
+}
+[data-theme='light'] .app-shell {
+  background-color: #eef3ff;
+  background-image: linear-gradient(135deg, #eaf3ff 0%, #dce9ff 55%, #e4e8ff 100%);
+}
+[data-theme='light'] .login-shell {
+  background-color: #eef3ff;
+  background-image: linear-gradient(135deg, #eaf3ff 0%, #dce9ff 55%, #e4e8ff 100%);
+}
+[data-theme='light'] .card {
+  box-shadow: 0 14px 32px rgba(55, 64, 126, 0.1);
+}
+.pardz-logo {
+  background: linear-gradient(145deg, #123c73 0%, #1d5aa0 55%, #315bd4 100%);
+  border: 1px solid rgba(151, 198, 255, 0.45);
+  box-shadow: 0 8px 24px rgba(20, 82, 165, 0.38);
+}
+.pardz-signin {
+  background: linear-gradient(100deg, #174b8c 0%, #216fc1 52%, #4169e8 100%);
+}
+.customer-header {
+  overflow: visible;
+}
+.galaxy-bg::before {
+  content: '';
+  position: absolute; inset: 0;
+  pointer-events: none;
+  background-image: radial-gradient(1.5px 1.5px at var(--x,20%) var(--y,30%), rgba(255,255,255,0.9), transparent);
+  opacity: .5;
+}
+
+.login-layout {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(440px, 1.15fr) minmax(380px, .85fr);
+  align-items: center;
+  gap: 5rem;
+}
+.login-brand-panel {
+  aspect-ratio: 916 / 778;
+  border-radius: 18px;
+  background-color: #103766;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  border: 1px solid rgba(92, 135, 220, 0.34);
+  box-shadow: 0 18px 45px -18px rgba(61, 123, 250, 0.6);
+  overflow: hidden;
+}
+.login-form-column { width: 100%; max-width: 440px; justify-self: center; }
+.login-form-column .card {
+  box-shadow: 0 18px 45px -25px rgba(3, 15, 48, 0.9);
+}
+@media (max-width: 900px) {
+  .login-layout { grid-template-columns: 1fr; gap: 1.5rem; }
+  .login-brand-panel { width: 100%; }
+}
+
+.card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-md);
+}
+
+.btn-primary {
+  background: var(--gradient-primary);
+  color: white;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  transition: transform .15s ease, box-shadow .15s ease, opacity .15s ease;
+}
+.btn-primary:hover { box-shadow: var(--shadow-glow); transform: translateY(-1px); }
+.btn-primary:active { transform: translateY(0); }
+.btn-primary:disabled { opacity: .5; cursor: not-allowed; transform: none; box-shadow: none; }
+
+.btn-ghost {
+  background: transparent;
+  border: 1px solid var(--border-soft);
+  color: var(--text-primary);
+  border-radius: var(--radius-sm);
+}
+.btn-ghost:hover { background: var(--bg-surface-2); }
+
+input, select, textarea {
+  background: var(--bg-surface-2);
+  border: 1px solid var(--border-soft);
+  color: var(--text-primary);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  font-weight: 400; /* values stay regular; the field's label above is medium */
+}
+input::placeholder, textarea::placeholder { color: var(--text-faint); font-weight: 400; }
+/* A select still on its empty first option ("Select ID type", "Choose destination") looks like a placeholder */
+select:has(option[value=""]:checked) { color: var(--text-faint); }
+select option { color: var(--text-primary); background: var(--bg-surface); }
+
+/* Field labels: the text before the control is medium weight, the control's text is regular */
+label { font-weight: 500; }
+label input, label select, label textarea { font-weight: 400; }
+
+/* File inputs: "Choose file" as a small button, "No file chosen" in grey */
+input[type="file"] { color: var(--text-faint); padding: 0.4rem 0.5rem !important; cursor: pointer; }
+input[type="file"]::file-selector-button {
+  margin-right: 0.75rem;
+  padding: 0.35rem 0.85rem;
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-sm);
+  background: var(--bg-surface);
+  color: var(--text-primary);
+  font: 500 0.8125rem var(--font-body);
+  cursor: pointer;
+}
+input[type="file"]::file-selector-button:hover { background: var(--bg-deep); }
+input:focus, select:focus, textarea:focus {
+  outline: 2px solid var(--nebula-3);
+  outline-offset: 1px;
+}
+
+.badge {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 3px 10px; border-radius: 999px;
+  font-size: 12px; font-weight: 600; letter-spacing: .02em;
+}
+.badge-pending { background: rgba(251,191,36,0.15); color: var(--warning); }
+.badge-accepted { background: rgba(74,222,128,0.15); color: var(--success); }
+.badge-rejected, .badge-cancelled { background: rgba(251,113,133,0.15); color: var(--danger); }
+.badge-ongoing { background: rgba(56,189,248,0.15); color: var(--nebula-3); }
+.badge-completed { background: rgba(109,114,240,0.15); color: var(--nebula-2); }
+
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-thumb { background: var(--bg-surface-2); border-radius: 999px; }
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; }
+}
+
+/* Customer vehicle cards: deep blue gradient, floating car photo, diagonal light streak in the corner. */
+.vehicle-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 1.75rem;
+  border: 1px solid rgba(96, 165, 250, 0.22);
+  background:
+    radial-gradient(120% 80% at 50% 38%, rgba(56, 189, 248, 0.16), transparent 60%),
+    linear-gradient(160deg, #13265a 0%, #0c1836 55%, #081128 100%);
+  box-shadow: 0 18px 40px -22px rgba(2, 8, 30, 0.9);
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+.vehicle-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(56, 189, 248, 0.5);
+  box-shadow: 0 26px 50px -24px rgba(37, 99, 235, 0.75);
+}
+.vehicle-card::before {
+  content: '';
+  position: absolute;
+  top: -40%;
+  right: -35%;
+  width: 70%;
+  height: 90%;
+  transform: rotate(32deg);
+  background: linear-gradient(90deg, rgba(56, 189, 248, 0), rgba(56, 189, 248, 0.22), rgba(99, 102, 241, 0.05));
+  pointer-events: none;
+}
+.vehicle-card-stage {
+  position: relative;
+  height: 11rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.vehicle-card-stage::after {
+  content: '';
+  position: absolute;
+  bottom: 0.9rem;
+  left: 18%;
+  right: 18%;
+  height: 1.1rem;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(3, 7, 25, 0.85), transparent);
+  filter: blur(4px);
+}
+.vehicle-card-stage img {
+  position: relative;
+  z-index: 1;
+  max-height: 100%;
+  max-width: 92%;
+  object-fit: contain;
+  filter: drop-shadow(0 14px 18px rgba(2, 6, 23, 0.65));
+  transition: transform 0.35s ease;
+}
+.vehicle-card:hover .vehicle-card-stage img { transform: scale(1.04) translateY(-2px); }
+.vehicle-card-spec { font-size: 0.7rem; color: rgba(191, 219, 254, 0.6); }
+.vehicle-card-spec b { margin-left: 0.3rem; font-weight: 600; color: #e0f2fe; }
+
+[data-theme='light'] .vehicle-card {
+  border-color: rgba(37, 99, 235, 0.18);
+  background:
+    radial-gradient(120% 80% at 50% 38%, rgba(56, 189, 248, 0.18), transparent 60%),
+    linear-gradient(160deg, #eaf2ff 0%, #dbe8ff 55%, #cfe0ff 100%);
+  box-shadow: 0 18px 36px -24px rgba(30, 64, 175, 0.45);
+}
+[data-theme='light'] .vehicle-card-stage::after { background: radial-gradient(closest-side, rgba(30, 58, 138, 0.35), transparent); }
+[data-theme='light'] .vehicle-card-spec { color: #5b6b8c; }
+[data-theme='light'] .vehicle-card-spec b { color: #0f2a5f; }
+
+/* The details pop-up uses the card look but should not lift on hover. */
+.vehicle-card[role="dialog"]:hover { transform: none; }
+
+/* Landscape photo frame on the vehicle cards: the photo fills a 16:10 frame and fades into the card. */
+.vehicle-card-photo {
+  position: relative;
+  z-index: 1;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  border-radius: 1.1rem;
+  border: 1px solid rgba(96, 165, 250, 0.18);
+  background: #0b1530;
+}
+.vehicle-card-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+.vehicle-card-photo::after {
+  content: '';
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 40%;
+  background: linear-gradient(to top, rgba(8, 17, 40, 0.75), transparent);
+  pointer-events: none;
+}
+.vehicle-card:hover .vehicle-card-photo img { transform: scale(1.05); }
+.vehicle-card[role="dialog"]:hover .vehicle-card-photo img { transform: none; }
+[data-theme='light'] .vehicle-card-photo::after { background: linear-gradient(to top, rgba(15, 42, 95, 0.35), transparent); }
+
+/* Time picker wheels: scroll without a visible scrollbar */
+.time-wheel { scrollbar-width: none; }
+.time-wheel::-webkit-scrollbar { display: none; }
+
+/* Rental agreement shown like the printed form: white page, black text, in both themes */
+/* Rental agreement laid out like the printed form. Follows the theme: light = white page with blue
+   filled-in values, dark = dark page with white text and white values. */
+:root, [data-theme='dark'] { --agreement-bg: var(--bg-surface-2); --agreement-text: #f1f5ff; --agreement-ink: #ffffff; --agreement-note: var(--text-muted); }
+[data-theme='light'] { --agreement-bg: #ffffff; --agreement-text: #111827; --agreement-ink: #1d4ed8; --agreement-note: #555; }
+.agreement-paper {
+  background: var(--agreement-bg);
+  color: var(--agreement-text);
+  border: 1px solid var(--border-soft);
+  font-family: Arial, Helvetica, sans-serif;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.18);
+}
+.agreement-ink { color: var(--agreement-ink); font-weight: 600; }
+
+/* Light mode: form boxes are white (not light blue) so the requirements forms read like a paper form */
+[data-theme='light'] input:not([type='checkbox']):not([type='radio']), [data-theme='light'] select, [data-theme='light'] textarea { background: #ffffff; }
