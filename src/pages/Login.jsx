@@ -5,7 +5,6 @@ import { useAuth } from '../context/AuthContext'
 import ThemeToggle from '../components/ThemeToggle'
 import heroImage from '../assets/hero.png'
 import PasswordInput from '../components/PasswordInput'
-import { api } from '../lib/api'
 
 export default function Login() {
   const { signInWithPassword, resendVerification } = useAuth()
@@ -17,27 +16,6 @@ export default function Login() {
   const [busy, setBusy] = useState(false)
   const [resending, setResending] = useState(false)
   const [notice, setNotice] = useState(location.state?.notice || '')
-  // Activation by the 6-digit code from the email (works on any device, even when the link can't be opened).
-  const [codeOpen, setCodeOpen] = useState(Boolean(location.state?.activate))
-  const [code, setCode] = useState('')
-  const [activating, setActivating] = useState(false)
-
-  async function handleActivate(e) {
-    e.preventDefault()
-    setError('')
-    setNotice('')
-    setActivating(true)
-    try {
-      const data = await api.post('/auth/verify-code', { email: email.trim().toLowerCase(), code: code.trim() })
-      setNotice(data.detail)
-      setCodeOpen(false)
-      setCode('')
-    } catch (activateError) {
-      setError(activateError.message)
-    }
-    setActivating(false)
-  }
-
   async function handleSubmit(e) {
     e.preventDefault()
     setError('')
@@ -86,20 +64,7 @@ export default function Login() {
               {resending ? 'Sending…' : 'Resend activation email'}
             </button>
           </div>
-          <button type="button" onClick={() => setCodeOpen(!codeOpen)} className="text-sm text-left" style={{ color: 'var(--nebula-3)' }}>
-            {codeOpen ? 'Hide activation code' : 'Activate with code'}
-          </button>
         </form>
-
-        {codeOpen && (
-          <form onSubmit={handleActivate} className="card p-6 mt-4 flex flex-col gap-3">
-            <p className="text-sm" style={{ color: 'var(--text-muted)' }}>Enter your email above and the 6-digit code from your activation email.</p>
-            <label className="flex flex-col gap-1 text-sm">Activation code
-              <input required inputMode="numeric" pattern="[0-9]{6}" maxLength={6} value={code} onChange={(e) => setCode(e.target.value.replace(/\D/g, ''))} className="px-3 py-2.5 tracking-[0.4em] text-center" placeholder="000000" />
-            </label>
-            <button type="submit" disabled={activating || !email.trim() || code.length !== 6} className="btn-primary py-2.5">{activating ? 'Activating…' : 'Activate account'}</button>
-          </form>
-        )}
 
         <p className="text-center text-sm mt-5" style={{ color: 'var(--text-muted)' }}>
           New to WheelSync? <Link to="/signup" style={{ color: 'var(--nebula-3)' }}>Create an account</Link>

@@ -37,8 +37,8 @@ export default function Signup() {
         {done ? (
           <div className="card p-6 text-center">
             <p style={{ color: 'var(--success)' }} className="font-medium">Check your email to activate your account.</p>
-            <p className="text-sm mt-1" style={{ color: 'var(--text-muted)' }}>Open the email and click Activate my account, or enter the 6-digit code from it on the sign-in page. If you don't see it, check your Spam folder.</p>
-            <Link to="/login" state={{ activate: true }} className="btn-primary mt-4 inline-block px-5 py-2.5 text-sm">Enter activation code</Link>
+            <p className="text-sm mt-1" style={{ color: 'var(--text-muted)' }}>Open the email and click Activate my account. If you don't see it, check your Spam folder.</p>
+            <Link to="/login" className="btn-primary mt-4 inline-block px-5 py-2.5 text-sm">Go to sign in</Link>
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="card p-6 flex flex-col gap-4">
